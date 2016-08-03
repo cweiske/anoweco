@@ -1,0 +1,5 @@
+<?php
+$dbdsn  = 'mysql:dbname=FIXME;host=127.0.0.1';
+$dbuser = 'FIXME';
+$dbpass = 'FIXME';
+?>
