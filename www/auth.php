@@ -130,5 +130,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         echo http_build_query(['me' => $me]);
         exit();
     }
+} else if ($_SERVER['REQUEST_METHOD'] == 'HEAD') {
+    //indieauth.com makes a HEAD request at first
+    header('HTTP/1.0 200 OK');
+    exit();
+} else {
+    error('Unsupported HTTP request method');
 }
 ?>
