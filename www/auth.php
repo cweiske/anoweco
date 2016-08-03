@@ -115,7 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $state        = getOptionalParameter($_POST, 'state', null);
 
         $code = getOptionalParameter($_POST, 'code', null);
-        if ($code !== null) {
+        if ($code !== null && $code !== '') {
             //code only given for "code" response_type, not for "id" mode
             parse_str(base64_decode($code), $codeParts);
             $emoji     = verifyParameter($codeParts, 'emoji');
