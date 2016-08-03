@@ -110,20 +110,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         exit();
     } else {
         //auth code verification
-        $code         = base64_decode(verifyParameter($_POST, 'code'));
         $redirect_uri = verifyUrlParameter($_POST, 'redirect_uri');
         $client_id    = verifyUrlParameter($_POST, 'client_id');
         $state        = getOptionalParameter($_POST, 'state', null);
 
-        parse_str($code, $codeParts);
-        $emoji     = verifyParameter($codeParts, 'emoji');
-        $signature = verifyParameter($codeParts, 'signature');
-        $me        = verifyUrlParameter($codeParts, 'me');
-        if ($emoji != '\360\237\222\251') {
-            error('Dog poo missing');
-        }
-        if ($signature != 'FIXME') {
-            error('Invalid signature');
+        $code = getOptionalParameter($_POST, 'code', null);
+        if ($code !== null) {
+            //code only given for "code" response_type, not for "id" mode
+            parse_str(base64_decode($code), $codeParts);
+            $emoji     = verifyParameter($codeParts, 'emoji');
+            $signature = verifyParameter($codeParts, 'signature');
+            $me        = verifyUrlParameter($codeParts, 'me');
+            if ($emoji != '\360\237\222\251') {
+                error('Dog poo missing');
+            }
+            if ($signature != 'FIXME') {
+                error('Invalid signature');
+            }
         }
         header('HTTP/1.0 200 OK');
         header('Content-type: application/x-www-form-urlencoded');
