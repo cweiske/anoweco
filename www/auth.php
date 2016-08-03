@@ -101,32 +101,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
         //redirect back to client
         $url = new \Net_URL2($redirect_uri);
-        if ($response_type == 'code') {
-            $url->setQueryVariable('code', $code);
-        }
+        $url->setQueryVariable('code', $code);
         $url->setQueryVariable('me', $me);
         $url->setQueryVariable('state', $state);
         header('Location: ' . $url->getURL());
         exit();
     } else {
         //auth code verification
+        $code         = base64_decode(verifyParameter($_POST, 'code'));
         $redirect_uri = verifyUrlParameter($_POST, 'redirect_uri');
         $client_id    = verifyUrlParameter($_POST, 'client_id');
         $state        = getOptionalParameter($_POST, 'state', null);
 
-        $code = getOptionalParameter($_POST, 'code', null);
-        if ($code !== null && $code !== '') {
-            //code only given for "code" response_type, not for "id" mode
-            parse_str(base64_decode($code), $codeParts);
-            $emoji     = verifyParameter($codeParts, 'emoji');
-            $signature = verifyParameter($codeParts, 'signature');
-            $me        = verifyUrlParameter($codeParts, 'me');
-            if ($emoji != '\360\237\222\251') {
-                error('Dog poo missing');
-            }
-            if ($signature != 'FIXME') {
-                error('Invalid signature');
-            }
+        parse_str($code, $codeParts);
+        $emoji     = verifyParameter($codeParts, 'emoji');
+        $signature = verifyParameter($codeParts, 'signature');
+        $me        = verifyUrlParameter($codeParts, 'me');
+        if ($emoji != '\360\237\222\251') {
+            error('Dog poo missing');
+        }
+        if ($signature != 'FIXME') {
+            error('Invalid signature');
         }
         header('HTTP/1.0 200 OK');
         header('Content-type: application/x-www-form-urlencoded');
