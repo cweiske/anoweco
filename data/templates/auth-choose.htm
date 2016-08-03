@@ -1,0 +1,46 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta charset="utf-8"/>
+  <title>Select your identity</title>
+ </head>
+ <body>
+  <h1>Select your identity</h1>
+  <p>
+   You may log in to {{client_id}} with any identity you like.
+  </p>
+
+  <form method="post" action="{{formaction}}">
+   {% for key, value in auth %}
+   <input type="hidden" name="auth[{{key}}]" value="{{value}}"/>
+   {% endfor %}
+
+   <ul>
+    <li>
+     <label>
+      <input type="radio" name="id[mode]" value="anonymous"/> Anonymous
+     </label>
+    </li>
+    <li>
+     <label>
+      <input type="radio" name="id[mode]" value="data"/> With a name
+     </label>
+     <ul>
+      <li>
+       <label for="id-name">Name:</label>
+       <input type="text" name="id[name]" id="id-name"/>
+      </li>
+      <li>
+       <label for="id-email">E-Mail:</label>
+       <input type="email" name="id[email]" id="id-email"/>
+       (used to fetch avatar image. not stored.)
+      </li>      
+     </ul>
+     <p>
+      All values are optional.
+     </p>
+    </li>
+   </ul>
+   <button type="submit">Login</button>
+  </form>
+ </body>
+</html>

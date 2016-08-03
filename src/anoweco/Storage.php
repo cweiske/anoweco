@@ -97,5 +97,36 @@ class Storage
         }
         return $row;
     }
+
+    public function findUser($name, $imageurl)
+    {
+        $stmt = $this->db->prepare(
+            'SELECT user_id FROM users'
+            . ' WHERE user_name = ? AND user_imageurl = ?'
+        );
+        $stmt->execute([$name, $imageurl]);
+        $row = $stmt->fetchObject();
+
+        if ($row === false) {
+            return null;
+        }
+        return $row->user_id;
+    }
+
+    public function createUser($name, $imageurl)
+    {
+        $stmt = $this->db->prepare(
+            'INSERT INTO users SET'
+            . '  user_name = :name'
+            . ', user_imageurl = :imageurl'
+        );
+        $stmt->execute(
+            array(
+                ':name'     => $name,
+                ':imageurl' => $imageurl,
+            )
+        );
+        return $this->db->lastInsertId();
+    }
 }
 ?>

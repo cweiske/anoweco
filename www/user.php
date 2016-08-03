@@ -18,7 +18,7 @@ if (!is_numeric($_GET['id'])) {
 $id = intval($_GET['id']);
 
 $storage = new Storage();
-$rowUser    = $storage->getUser($id);
+$rowUser = $storage->getUser($id);
 if ($rowUser === null) {
     header('HTTP/1.0 404 Not Found');
     header('Content-Type: text/plain');
