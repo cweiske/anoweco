@@ -10,4 +10,5 @@ mysqldump\
  anoweco\
  | grep -v '^/\\*'\
  | grep -v '^--'\
+ | sed 's/AUTO_INCREMENT=[0-9]* //'\
  > ../data/schema.sql

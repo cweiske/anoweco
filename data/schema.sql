@@ -9,7 +9,7 @@ CREATE TABLE `comments` (
   `comment_type` varchar(32) NOT NULL,
   `comment_json` mediumtext NOT NULL,
   PRIMARY KEY (`comment_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE `users` (
@@ -18,6 +18,6 @@ CREATE TABLE `users` (
   `user_email` varchar(256) NOT NULL,
   `user_imageurl` varchar(1024) NOT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
