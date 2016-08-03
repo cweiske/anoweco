@@ -1,0 +1,10 @@
+# PHP does not see the "Authorization" header by default
+# so we have to manually pass it to PHP
+SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+
+RewriteEngine On
+RewriteBase /
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^comment/([0-9]+).htm$ comment.php?id=$1
+RewriteRule ^user/([0-9]+).htm$ user.php?id=$1

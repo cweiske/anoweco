@@ -1,0 +1,23 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta charset="utf-8"/>
+  <title>Comment to {{attribute(json, 'in-reply-to').0}}</title>
+ </head>
+ <body class="h-entry">
+  <h1>Comment #{{crow.comment_id}}</h1>
+  <p>
+   {% spaceless %}
+   <a class="p-author h-card" href="{{author.url}}">
+    <img class="u-photo" src="{{author.imageurl}}" alt="" width="32" height="32" />
+    {{author.name}}</a>
+   {% endspaceless %}
+   wrote the following reply to
+   <a rel="in-reply-to u-in-reply-to"
+      href="{{attribute(json, 'in-reply-to').0}}">{{attribute(json, 'in-reply-to').0}}</a>:
+  </p>
+  <div class="e-content">{{htmlContent|raw}}</div>
+  <p>
+   <a href="{{replyUrl}}">Reply to this comment</a>
+  </p>
+ </body>
+</html>

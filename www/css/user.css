@@ -1,0 +1,47 @@
+* {
+    box-sizing: border-box;
+}
+body {
+    display: flex;
+    height: 100%;
+    margin: 0px;
+    background-color: #EEF;
+}
+h1 {
+    flex: 1 1 50%;
+    align-self: stretch;
+    text-align: right;
+    margin-top: auto;
+    margin-bottom: auto;
+    order: 1;
+}
+#img {
+    flex: 1 1 50%;
+    align-self: stretch;
+    text-align: center;
+    margin: auto;
+    order: 2;
+}
+img {
+    width: 100%;
+    height: auto;
+    max-width: 50%;
+    max-height: 50%;
+}
+
+@media all and (max-width: 640px) {
+    body {
+        flex-flow: column;
+    }
+    h1 {
+        text-align: center;
+    }
+    #img {
+        order: 0;
+    }
+    img {
+        height: 50%;
+        width: auto;
+        margin-top: 13%;
+    }
+}
