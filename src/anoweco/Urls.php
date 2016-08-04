@@ -13,9 +13,9 @@ class Urls
         return '/user/' . intval($id) . '.htm';
     }
 
-    public static function userImg($rowUser)
+    public static function userImg($rowUser = null)
     {
-        if ($rowUser->user_imageurl != '') {
+        if ($rowUser !== null && $rowUser->user_imageurl != '') {
             return $rowUser->user_imageurl;
         }
         return static::full('/img/anonymous.svg');

@@ -8,7 +8,7 @@ namespace anoweco;
 header('HTTP/1.0 500 Internal Server Error');
 require 'www-header.php';
 
-function getOrCreateUser($mode, $name, $email)
+function getOrCreateUser($mode, $name, $imageurl, $email)
 {
     if ($mode == 'anonymous') {
         $name  = 'Anonymous';
@@ -18,7 +18,9 @@ function getOrCreateUser($mode, $name, $email)
             $name = 'Anonymous';
         }
     }
-    $imageurl = getImageUrl($email);
+    if ($imageurl == '') {
+        $imageurl = getImageUrl($email);
+    }
 
     $storage = new Storage();
     $id = $storage->findUser($name, $imageurl);
@@ -52,7 +54,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $response_type = getOptionalParameter($_GET, 'response_type', 'id');
     $scope         = getOptionalParameter($_GET, 'scope', null);
 
-    //FIXME: if $me is an actual user, load his data
+    $id = array(
+        'mode'     => 'anonymous',
+        'name'     => '',
+        'imageurl' => '',
+    );
+    $userbaseurl = Urls::full('/user/');
+    if (substr($me, 0, strlen($userbaseurl)) == $userbaseurl) {
+        //actual user URL - loads his data
+        $userid = substr($me, strrpos($me, '/') + 1, -4);
+        if (intval($userid) == $userid) {
+            $storage = new Storage();
+            $rowUser = $storage->getUser($userid);
+            if ($rowUser !== null) {
+                $id['mode']     = 'data';
+                $id['name']     = $rowUser->user_name;
+                $id['imageurl'] = $rowUser->user_imageurl;
+                if ($id['imageurl'] == Urls::userImg()) {
+                    $id['imageurl'] = '';
+                }
+            }
+        }
+    }
 
     //let the user choose his identity
     header('HTTP/1.0 200 OK');
@@ -66,6 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                 'response_type' => $response_type,
                 'scope'         => $scope,
             ),
+            'id' => $id,
             'formaction' => '/auth.php?action=login',
         )
     );
@@ -84,7 +108,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         verifyParameter($id, 'mode');
 
         $userId = getOrCreateUser(
-            $id['mode'], trim($id['name']), trim($id['email'])
+            $id['mode'], trim($id['name']), trim($id['imageurl']),
+            trim($id['email'])
         );
         $me = Urls::full(Urls::user($userId));
 

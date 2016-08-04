@@ -17,23 +17,33 @@
    <ul>
     <li>
      <label>
-      <input type="radio" name="id[mode]" value="anonymous" checked="checked"/>
+      <input type="radio" name="id[mode]" value="anonymous"
+             {%if id.mode=="anonymous"%}checked="checked"{%endif%}/>
       Anonymous
      </label>
     </li>
     <li>
      <label>
-      <input type="radio" name="id[mode]" value="data"/> With a name
+      <input type="radio" name="id[mode]" value="data"
+             {%if id.mode=="data"%}checked="checked"{%endif%}/>
+      With a name
      </label>
      <ul>
       <li>
        <label for="id-name">Name:</label>
-       <input type="text" name="id[name]" id="id-name"/>
+       <input type="text" name="id[name]" id="id-name" value="{{id.name}}"/>
       </li>
       <li>
-       <label for="id-email">E-Mail:</label>
+       {% if id.imageurl %}
+       <img src="{{id.imageurl}}" width="32" height="32" alt="Avatar image"/>
+       {% endif %}
+       <label for="id-imageurl">Avatar image URL:</label>
+       <input type="url" name="id[imageurl]" id="id-imageurl"
+              value="{{id.imageurl}}" size="60"/>
+       <br/>
+       alternatively, provide an email so we can autodetect its avatar:
        <input type="email" name="id[email]" id="id-email"/>
-       (used to fetch avatar image. not stored.)
+       (will not be stored.)
       </li>      
      </ul>
      <p>
