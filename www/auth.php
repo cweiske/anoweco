@@ -11,8 +11,9 @@ require 'www-header.php';
 function getOrCreateUser($mode, $name, $imageurl, $email)
 {
     if ($mode == 'anonymous') {
-        $name  = 'Anonymous';
-        $email = '';
+        $name     = 'Anonymous';
+        $email    = '';
+        $imageurl = '';
     } else {
         if ($name == '') {
             $name = 'Anonymous';
