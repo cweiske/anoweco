@@ -1,0 +1,12 @@
+body {
+    max-width: 60ex;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #EEE;
+}
+
+pre {
+    background-color: #DDD;
+    padding: 2ex;
+    border-radius: 1ex;
+}

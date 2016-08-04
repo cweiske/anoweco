@@ -4,11 +4,24 @@
   <link rel="authorization_endpoint" href="{{baseurl}}auth.php"/>
   <link rel="token_endpoint" href="{{baseurl}}token.php"/>
   <link rel="micropub" href="{{baseurl}}micropub.php"/>
+  <link rel="stylesheet" type="text/css" href="css/index.css"/>
  </head>
  <body>
   <h1>{{title}}</h1>
   <p>
    Anonymous web comments for the indieweb.
   </p>
+
+
+  <h2>IndieAuth endpoint</h2>
+  <p>
+   This is an anonymous authentication and authorization
+   endpoint for the IndieAuth protocol.
+  </p>
+  <p>
+   When asked about your website on an IndieAuth login screen,
+   simply type:
+  </p>
+  <pre>{{baseurl}}</pre>
  </body>
 </html>
