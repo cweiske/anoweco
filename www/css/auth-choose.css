@@ -1,0 +1,40 @@
+body {
+    max-width: 60ex;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #EEE;
+}
+
+label.mode {
+    display: block;
+    padding: 2ex;
+    background-color: #DDD;
+    border-top: 1px solid #EEE;
+}
+div.data-mode {
+    margin-left: 5ex;
+    background-color: #DDD;
+}
+div.data-mode label {
+    display: inline-block;
+    width: 20ex;
+}
+div.data-mode div {
+    padding: 2ex 2ex;
+    border-top: 1px solid #EEE;
+}
+div.data-mode input {
+    width: 34ex;
+}
+button {
+    margin: 2ex;
+    width: 20ex;
+    height: 5ex;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+p.note {
+    text-align: center;
+    color: #444;
+}

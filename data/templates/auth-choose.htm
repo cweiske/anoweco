@@ -2,6 +2,7 @@
  <head>
   <meta charset="utf-8"/>
   <title>Select your identity</title>
+  <link rel="stylesheet" type="text/css" href="css/auth-choose.css"/>
  </head>
  <body>
   <h1>Select your identity</h1>
@@ -14,44 +15,39 @@
    <input type="hidden" name="auth[{{key}}]" value="{{value}}"/>
    {% endfor %}
 
-   <ul>
-    <li>
-     <label>
-      <input type="radio" name="id[mode]" value="anonymous"
-             {%if id.mode=="anonymous"%}checked="checked"{%endif%}/>
-      Anonymous
-     </label>
-    </li>
-    <li>
-     <label>
-      <input type="radio" name="id[mode]" value="data"
-             {%if id.mode=="data"%}checked="checked"{%endif%}/>
-      With a name
-     </label>
-     <ul>
-      <li>
-       <label for="id-name">Name:</label>
-       <input type="text" name="id[name]" id="id-name" value="{{id.name}}"/>
-      </li>
-      <li>
-       {% if id.imageurl %}
-       <img src="{{id.imageurl}}" width="32" height="32" alt="Avatar image"/>
-       {% endif %}
-       <label for="id-imageurl">Avatar image URL:</label>
-       <input type="url" name="id[imageurl]" id="id-imageurl"
-              value="{{id.imageurl}}" size="60"/>
-       <br/>
-       alternatively, provide an email so we can autodetect its avatar:
-       <input type="email" name="id[email]" id="id-email"/>
-       (will not be stored.)
-      </li>      
-     </ul>
-     <p>
-      All values are optional.
-     </p>
-    </li>
-   </ul>
+   <label class="mode">
+    <input type="radio" name="id[mode]" value="anonymous"
+           {%if id.mode=="anonymous"%}checked="checked"{%endif%}/>
+    Anonymous
+   </label>
+
+   <label class="mode">
+    <input type="radio" name="id[mode]" value="data"
+           {%if id.mode=="data"%}checked="checked"{%endif%}/>
+    With a name
+   </label>
+   <div class="data-mode">
+    <div>
+     <label for="id-name">Name:</label>
+     <input type="text" name="id[name]" id="id-name" value="{{id.name}}"/>
+    </div>
+    <div>
+     <label for="id-imageurl">Avatar image URL:</label>
+     <input type="url" name="id[imageurl]" id="id-imageurl"
+            value="{{id.imageurl}}"/>
+    </div>
+    <div>
+     .. or use this email's avatar image:
+    </div>
+    <div>
+     <label for="id-email">E-Mail:</label>
+     <input type="email" name="id[email]" id="id-email"/>
+    </div>
+   </div>
    <button type="submit">Login</button>
+   <p class="note">
+    The e-mail address will not be stored.
+   </p>
   </form>
  </body>
 </html>
