@@ -37,6 +37,7 @@ function validateToken($token)
                 'header' => array(
                     'Authorization: Bearer ' . $token
                 ),
+                'ignore_errors' => true,
             ),
         )
     );
@@ -47,7 +48,7 @@ function validateToken($token)
         mpError(
             'HTTP/1.0 403 Forbidden',
             'forbidden',
-            'Error verifying bearer token: ' . $res
+            'Error verifying bearer token: ' . trim($res)
         );
     }
 
