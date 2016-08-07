@@ -47,7 +47,7 @@ function validateToken($token)
         mpError(
             'HTTP/1.0 403 Forbidden',
             'forbidden',
-            'Error verifying bearer token'
+            'Error verifying bearer token: ' . $res
         );
     }
 
