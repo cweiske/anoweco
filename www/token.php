@@ -48,14 +48,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
 
     //FIXME: use real decryption
-    $data = json_decode($token);
-    if ($data === null) {
-        error('Invalid token');
+    $encData = base64_decode($token);
+    if ($encData === false) {
+        error('Invalid token data');
     }
-    $data = (array) $data;
+    parse_str($encData, $data);
+    $emoji     = verifyParameter($data, 'emoji');
+    $signature = verifyParameter($data, 'signature');
     $me        = verifyUrlParameter($data, 'me');
     $client_id = verifyUrlParameter($data, 'client_id');
     $scope     = verifyParameter($data, 'scope');
+
+    if ($emoji != '\360\237\222\251') {
+        error('Dog poo missing');
+    }
+    if ($signature != 'FIXME') {
+        error('Invalid signature');
+    }
 
     header('HTTP/1.0 200 OK');
     header('Content-type: application/x-www-form-urlencoded');
@@ -80,11 +89,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $scope = 'post';
 
     //FIXME: use real encryption
-    $access_token = '<h1>"\'' . json_encode(
-        array(
-            'me'        => $me,
-            'client_id' => $client_id,
-            'scope'     => $scope
+    $access_token = base64_encode(
+        http_build_query(
+            array(
+                'emoji'     => '\360\237\222\251',
+                'me'        => $me,
+                'client_id' => $client_id,
+                'scope'     => $scope,
+                'signature' => 'FIXME',
+            )
         )
     );
     header('HTTP/1.0 200 OK');

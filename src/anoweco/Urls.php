@@ -30,5 +30,19 @@ class Urls
             . $_SERVER['HTTP_HOST']
             . $str;
     }
+
+    public static function userId($url)
+    {
+        $userbaseurl = Urls::full('/user/');
+        if (substr($url, 0, strlen($userbaseurl)) != $userbaseurl) {
+            return null;
+        }
+        //actual user URL - loads his data
+        $userId = substr($url, strrpos($url, '/') + 1, -4);
+        if (intval($userId) != $userId) {
+            return null;
+        }
+        return intval($userId);
+    }
 }
 ?>

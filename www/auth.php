@@ -60,20 +60,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         'name'     => '',
         'imageurl' => '',
     );
-    $userbaseurl = Urls::full('/user/');
-    if (substr($me, 0, strlen($userbaseurl)) == $userbaseurl) {
-        //actual user URL - loads his data
-        $userid = substr($me, strrpos($me, '/') + 1, -4);
-        if (intval($userid) == $userid) {
-            $storage = new Storage();
-            $rowUser = $storage->getUser($userid);
-            if ($rowUser !== null) {
-                $id['mode']     = 'data';
-                $id['name']     = $rowUser->user_name;
-                $id['imageurl'] = $rowUser->user_imageurl;
-                if ($id['imageurl'] == Urls::userImg()) {
-                    $id['imageurl'] = '';
-                }
+    $userId = Urls::userId($me);
+    if ($userId !== null) {
+        $storage = new Storage();
+        $rowUser = $storage->getUser($userId);
+        if ($rowUser !== null) {
+            $id['mode']     = 'data';
+            $id['name']     = $rowUser->user_name;
+            $id['imageurl'] = $rowUser->user_imageurl;
+            if ($id['imageurl'] == Urls::userImg()) {
+                $id['imageurl'] = '';
             }
         }
     }

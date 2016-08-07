@@ -9,7 +9,7 @@ header('HTTP/1.0 500 Internal Server Error');
 require 'www-header.php';
 
 /**
- * Send out an error
+ * Send out a micropub error
  *
  * @param string $status      HTTP status code line
  * @param string $code        One of the allowed status types:
@@ -19,7 +19,7 @@ require 'www-header.php';
  *                            - not_found
  * @param string $description
  */
-function error($status, $code, $description)
+function mpError($status, $code, $description)
 {
     header($status);
     header('Content-Type: application/json');
@@ -29,20 +29,69 @@ function error($status, $code, $description)
     exit(1);
 }
 
-function handleCreate($json)
+function validateToken($token)
 {
+    $ctx = stream_context_create(
+        array(
+            'http' => array(
+                'header' => array(
+                    'Authorization: Bearer ' . $token
+                ),
+            ),
+        )
+    );
+    //FIXME: make hard-coded token server URL configurable
+    $res = @file_get_contents(Urls::full('/token.php'), false, $ctx);
+    list($dummy, $code, $msg) = explode(' ', $http_response_header[0]);
+    if ($code != 200) {
+        mpError(
+            'HTTP/1.0 403 Forbidden',
+            'forbidden',
+            'Error verifying bearer token'
+        );
+    }
+
+    parse_str($res, $data);
+    //FIXME: they spit out non-micropub json error responess
+    verifyUrlParameter($data, 'me');
+    verifyUrlParameter($data, 'client_id');
+    verifyParameter($data, 'scope');
+
+    return [$data['me'], $data['client_id'], $data['scope']];
+}
+
+function handleCreate($json, $token)
+{
+    list($me, $client_id, $scope) = validateToken($token);
+    $userId = Urls::userId($me);
+    if ($userId === null) {
+        mpError(
+            'HTTP/1.0 403 Forbidden',
+            'forbidden',
+            'Invalid user URL'
+        );
+    }
+    $storage = new Storage();
+    $rowUser = $storage->getUser($userId);
+    if ($rowUser === null) {
+        mpError(
+            'HTTP/1.0 403 Forbidden',
+            'forbidden',
+            'User not found: ' . $userId
+        );
+    }
+
     if (!isset($json->properties->{'in-reply-to'})) {
-        error(
+        mpError(
             'HTTP/1.0 400 Bad Request',
             'invalid_request',
             'Only replies accepted'
         );
     }
-    //FIXME: read bearer token
-    //FIXME: get user ID
+
     $storage = new Storage();
     try {
-        $id = $storage->addComment($json, 0);
+        $id = $storage->addComment($json, $userId);
 
         header('HTTP/1.0 201 Created');
         header('Location: ' . Urls::full(Urls::comment($id)));
@@ -54,9 +103,28 @@ function handleCreate($json)
     }
 }
 
+function getTokenFromHeader()
+{
+    if (!isset($_SERVER['HTTP_AUTHORIZATION'])) {
+        mpError(
+            'HTTP/1.0 403 Forbidden', 'forbidden',
+            'Authorization HTTP header missing'
+        );
+    }
+    list($bearer, $token) = explode(' ', $_SERVER['HTTP_AUTHORIZATION'], 2);
+    if ($bearer !== 'Bearer') {
+        mpError(
+            'HTTP/1.0 403 Forbidden', 'forbidden',
+            'Authorization header must start with "Bearer"'
+        );
+    }
+    return trim($token);
+}
+
+
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (!isset($_GET['q'])) {
-        error(
+        mpError(
             'HTTP/1.1 400 Bad Request',
             'invalid_request',
             'Parameter "q" missing.'
@@ -80,7 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
 } else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!isset($_SERVER['CONTENT_TYPE'])) {
-        error(
+        mpError(
             'HTTP/1.1 400 Bad Request',
             'invalid_request',
             'Content-Type header missing.'
@@ -106,8 +174,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             $base->type = ['h-' . $data['h']];
             unset($data['h']);
         }
+        if (isset($data['access_token'])) {
+            $token = $data['access_token'];
+            unset($data['access_token']);
+        } else {
+            $token = getTokenFromHeader();
+        }
         //reserved properties
-        foreach (['access_token', 'q', 'url', 'action'] as $key) {
+        foreach (['q', 'url', 'action'] as $key) {
             if (isset($data[$key])) {
                 $base->$key = $data[$key];
                 unset($data[$key]);
@@ -125,27 +199,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         }
         $json = $base;
         $json->properties = (object) $data;
-        handleCreate($json);
+        handleCreate($json, $token);
     } else if ($ctype == 'application/javascript') {
         $input = file_get_contents('php://stdin');
         $json  = json_decode($input);
         if ($json === null) {
-            error(
+            mpError(
                 'HTTP/1.1 400 Bad Request',
                 'invalid_request',
                 'Invalid JSON'
             );
         }
-        handleCreate($json);
+        $token = getTokenFromHeader();
+        handleCreate($json, $token);
     } else {
-        error(
+        mpError(
             'HTTP/1.1 400 Bad Request',
             'invalid_request',
             'Unsupported POST content type'
         );
     }
 } else {
-    error(
+    mpError(
         'HTTP/1.0 400 Bad Request',
         'invalid_request',
         'Unsupported HTTP request method'
