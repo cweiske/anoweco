@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /auth.php
+Disallow: /micropub.php
+Disallow: /token.php
