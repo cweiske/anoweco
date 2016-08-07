@@ -39,10 +39,15 @@ function getOptionalParameter($givenParams, $paramName, $default)
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     //verify token
-    if (!isset($_SERVER['HTTP_AUTHORIZATION'])) {
+    if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
+        $auth = $_SERVER['HTTP_AUTHORIZATION'];
+    } else if (isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
+        //php-cgi has it there
+        $auth = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
+    } else {
         error('Authorization HTTP header missing');
     }
-    list($bearer, $token) = explode(' ', $_SERVER['HTTP_AUTHORIZATION'], 2);
+    list($bearer, $token) = explode(' ', $auth, 2);
     if ($bearer !== 'Bearer') {
         error('Authorization header must start with "Bearer"');
     }
