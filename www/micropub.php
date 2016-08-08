@@ -82,14 +82,6 @@ function handleCreate($json, $token)
         );
     }
 
-    if (!isset($json->properties->{'in-reply-to'})) {
-        mpError(
-            'HTTP/1.0 400 Bad Request',
-            'invalid_request',
-            'Only replies accepted'
-        );
-    }
-
     $storage = new Storage();
     try {
         $id = $storage->addComment($json, $userId);
@@ -98,8 +90,19 @@ function handleCreate($json, $token)
         header('Location: ' . Urls::full(Urls::comment($id)));
         exit();
     } catch (\Exception $e) {
-        //FIXME: return correct status code
-        header('HTTP/1.0 500 Internal Server Error');
+        if ($e->getCode() == 400) {
+            mpError(
+                'HTTP/1.0 400 Bad Request',
+                'invalid_request',
+                $e->getMessage()
+            );
+        }
+
+        mpError(
+            'HTTP/1.0 500 Internal Server Error',
+            'this_violates_the_spec',
+            $e->getMessage()
+        );
         exit();
     }
 }

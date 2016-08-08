@@ -31,14 +31,25 @@ class Storage
         );
 
         $ofUrl = '';
+        $type  = null;
         if (isset($json->properties->{'in-reply-to'})) {
             $ofUrl = reset($json->properties->{'in-reply-to'});
+            $type = 'reply';
+        } else if (isset($json->properties->{'like-of'})) {
+            $ofUrl = reset($json->properties->{'like-of'});
+            $type  = 'like';
+        } else {
+            throw new \Exception(
+                'Invalid post type, only reply and like allowed',
+                400
+            );
         }
+
         $stmt->execute(
             array(
                 ':userId' => $userId,
                 ':ofUrl'  => $ofUrl,
-                ':type'   => reset($json->type),
+                ':type'   => $type,
                 ':json'   => json_encode($json),
             )
         );

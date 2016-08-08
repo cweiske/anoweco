@@ -26,29 +26,35 @@ if ($comment === null) {
     exit(1);
 }
 
-if (isset($comment->properties->content['html'])) {
-    $htmlContent = $comment->properties->content['html'];
-} else {
-    $htmlContent = nl2br($comment->properties->content[0]);
-}
-
 $rowComment = $comment->Xrow;
 $rowUser    = $comment->user;
-render(
-    'comment',
-    array(
-        'json' => $comment->properties,
-        'crow' => $rowComment,
-        'comment' => $comment,
-        'author'  => array(
-            'name' => $rowUser->user_name,
-            'url'  => Urls::full(Urls::user($rowUser->user_id)),
-            'imageurl' => Urls::userImg($rowUser),
-        ),
-        'htmlContent' => $htmlContent,
-        'replyUrl' => Urls::full(
-            '/reply.php?url=' . urlencode(Urls::full($rowComment->comment_id))
-        ),
-    )
+
+$vars = array(
+    'json' => $comment->properties,
+    'crow' => $rowComment,
+    'comment' => $comment,
+    'author'  => array(
+        'name' => $rowUser->user_name,
+        'url'  => Urls::full(Urls::user($rowUser->user_id)),
+        'imageurl' => Urls::userImg($rowUser),
+    ),
+    'replyUrl' => Urls::full(
+        '/reply.php?url=' . urlencode(Urls::full($rowComment->comment_id))
+    ),
 );
+
+if ($rowComment->comment_type == 'like') {
+    $template = 'post-like';
+} else {
+    //reply
+    $template = 'post-reply';
+    if (isset($comment->properties->content['html'])) {
+        $htmlContent = $comment->properties->content['html'];
+    } else {
+        $htmlContent = nl2br($comment->properties->content[0]);
+    }
+    $vars['htmlContent'] = $htmlContent;
+}
+
+render($template, $vars);
 ?>

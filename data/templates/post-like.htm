@@ -1,0 +1,19 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta charset="utf-8"/>
+  <title>Like of {{attribute(json, 'like-of').0}}</title>
+ </head>
+ <body class="h-entry">
+  <h1>Like #{{crow.comment_id}}</h1>
+  <p>
+   {% spaceless %}
+   <a class="p-author h-card" href="{{author.url}}">
+    <img class="u-photo" src="{{author.imageurl}}" alt="" width="32" height="32" />
+    {{author.name}}</a>
+   {% endspaceless %}
+   likes
+   <a rel="u-like-of"
+      href="{{attribute(json, 'like-of').0}}">{{attribute(json, 'like-of').0}}</a>.
+  </p>
+ </body>
+</html>
