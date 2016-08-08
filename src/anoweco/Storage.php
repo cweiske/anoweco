@@ -57,9 +57,11 @@ class Storage
     }
 
     /**
-     * @return null|object NULL if not found, comment object otherwise
+     * @return null|object NULL if not found, JSON comment object otherwise
+     *                     - "Xrow" property contains the database row object
+     *                     - "user" property contains the user db row object
      */
-    public function getComment($id)
+    public function getJsonComment($id)
     {
         $stmt = $this->db->prepare(
             'SELECT * FROM comments WHERE comment_id = ?'
@@ -75,15 +77,13 @@ class Storage
         $json->Xrow = $row;
         //FIXME: load user
 
-        $stmt = $this->db->prepare(
-            'SELECT * FROM users WHERE user_id = ?'
-        );
+        $stmt = $this->db->prepare('SELECT * FROM users WHERE user_id = ?');
         $stmt->execute([$row->comment_user_id]);
         $rowUser = $stmt->fetchObject();
         if ($rowUser === false) {
             $rowUser = (object) array(
-                'user_id'   => 0,
-                'user_name' => 'Anonymous',
+                'user_id'       => 0,
+                'user_name'     => 'Anonymous',
                 'user_imageurl' => '',
             );
         }
@@ -138,6 +138,14 @@ class Storage
             )
         );
         return $this->db->lastInsertId();
+    }
+
+    public function setPostPingState($postId, $pingstate)
+    {
+        $stmt = $this->db->prepare(
+            'UPDATE comments SET comment_pingstate = ? WHERE comment_id = ?'
+        );
+        $stmt->execute(array($pingstate, $postId));
     }
 }
 ?>

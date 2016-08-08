@@ -83,8 +83,10 @@ function handleCreate($json, $token)
     }
 
     $storage = new Storage();
+    $lb      = new Linkback();
     try {
         $id = $storage->addComment($json, $userId);
+        $lb->ping($id);
 
         header('HTTP/1.0 201 Created');
         header('Location: ' . Urls::full(Urls::comment($id)));

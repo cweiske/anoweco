@@ -8,6 +8,7 @@ CREATE TABLE `comments` (
   `comment_of_url` varchar(2048) NOT NULL,
   `comment_type` varchar(32) NOT NULL,
   `comment_json` mediumtext NOT NULL,
+  `comment_pingstate` varchar(6) NOT NULL,
   PRIMARY KEY (`comment_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

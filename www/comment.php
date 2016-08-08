@@ -18,7 +18,7 @@ if (!is_numeric($_GET['id'])) {
 $id = intval($_GET['id']);
 
 $storage = new Storage();
-$comment = $storage->getComment($id);
+$comment = $storage->getJsonComment($id);
 if ($comment === null) {
     header('HTTP/1.0 404 Not Found');
     header('Content-Type: text/plain');
