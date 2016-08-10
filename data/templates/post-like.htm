@@ -11,7 +11,7 @@
     <img class="u-photo" src="{{author.imageurl}}" alt="" width="32" height="32" />
     {{author.name}}</a>
    {% endspaceless %}
-   likes
+   <a href="{{postUrl}}" class="u-url">likes</a>
    <a rel="u-like-of"
       href="{{attribute(json, 'like-of').0}}">{{attribute(json, 'like-of').0}}</a>.
   </p>

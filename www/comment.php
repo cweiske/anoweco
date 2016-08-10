@@ -38,8 +38,10 @@ $vars = array(
         'url'  => Urls::full(Urls::user($rowUser->user_id)),
         'imageurl' => Urls::userImg($rowUser),
     ),
+    'postUrl' => Urls::full(Urls::comment($rowComment->comment_id)),
     'replyUrl' => Urls::full(
-        '/reply.php?url=' . urlencode(Urls::full($rowComment->comment_id))
+        '/reply.php?url='
+        . urlencode(Urls::full(Urls::comment($rowComment->comment_id)))
     ),
 );
 
