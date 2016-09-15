@@ -211,8 +211,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $json = $base;
         $json->properties = (object) $data;
         handleCreate($json, $token);
-    } else if ($ctype == 'application/javascript') {
-        $input = file_get_contents('php://stdin');
+    } else if ($ctype == 'application/json') {
+        $input = file_get_contents('php://input');
         $json  = json_decode($input);
         if ($json === null) {
             mpError(
