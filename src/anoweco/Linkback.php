@@ -47,7 +47,7 @@ class Linkback
         }
 
         if ($error) {
-            $pingState = $rowPost->comment_pingstate + 1;
+            $pingState = intval($rowPost->comment_pingstate) + 1;
         } else {
             $pingState = 'ok';
         }
