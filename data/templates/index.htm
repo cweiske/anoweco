@@ -13,6 +13,22 @@
   </p>
 
 
+  <h2>Write a comment</h2>
+  <p>
+   Write a reply to a blog post:
+  </p>
+  <form method="get" action="https://quill.p3k.io/">
+   <input type="hidden" name="dontask" value="1"/>
+   <input type="hidden" name="me" value="{{baseurl}}"/>
+   <label>
+    URL:
+    <input type="url" name="reply" size="30"
+           placeholder="http://example.org/blogpost.htm"/>
+   </label>
+   <button type="submit">Write a comment</button>
+  </form>
+
+
   <h2>IndieAuth endpoint</h2>
   <p>
    This is an anonymous authentication and authorization
