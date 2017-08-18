@@ -83,7 +83,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
 } else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     //generate token
-    $me           = verifyUrlParameter($_POST, 'me');
+    //we ignore the "me" parameter; it's for proxies only
+    // see https://github.com/cweiske/anoweco/issues/3
     $redirect_uri = verifyUrlParameter($_POST, 'redirect_uri');
     $client_id    = verifyUrlParameter($_POST, 'client_id');
     $code         = verifyParameter($_POST, 'code');//auth token
@@ -93,15 +94,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     parse_str(base64_decode($code), $codeParts);
     $emoji     = verifyParameter($codeParts, 'emoji');
     $signature = verifyParameter($codeParts, 'signature');
-    $codeMe    = verifyUrlParameter($codeParts, 'me');
+    $me        = verifyUrlParameter($codeParts, 'me');
     if ($emoji != '\360\237\222\251') {
         error('Auth token: Dog poo missing');
     }
     if ($signature != 'FIXME') {
         error('Auth token: Invalid signature');
-    }
-    if ($me !== $codeMe) {
-        error('Auth token is not valid for the given "me"');
     }
 
     //FIXME: check if state are set
