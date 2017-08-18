@@ -88,7 +88,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $client_id    = verifyUrlParameter($_POST, 'client_id');
     $code         = verifyParameter($_POST, 'code');//auth token
     $state        = getOptionalParameter($_POST, 'state', null);
-    //FIXME: check if code and state are set
+
+    //verify auth code
+    parse_str(base64_decode($code), $codeParts);
+    $emoji     = verifyParameter($codeParts, 'emoji');
+    $signature = verifyParameter($codeParts, 'signature');
+    $codeMe    = verifyUrlParameter($codeParts, 'me');
+    if ($emoji != '\360\237\222\251') {
+        error('Auth token: Dog poo missing');
+    }
+    if ($signature != 'FIXME') {
+        error('Auth token: Invalid signature');
+    }
+    if ($me !== $codeMe) {
+        error('Auth token is not valid for the given "me"');
+    }
+
+    //FIXME: check if state are set
     //FIXME: check auth endpoint if parameters are valid
     //        and to get the scope
     $scope = 'post';
