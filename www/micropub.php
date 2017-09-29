@@ -165,7 +165,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             'Content-Type header missing.'
         );
     }
-    $ctype = $_SERVER['CONTENT_TYPE'];
+    list($ctype) = explode(';', $_SERVER['CONTENT_TYPE'], 2);
+    $ctype = trim($ctype);
     if ($ctype == 'application/x-www-form-urlencoded') {
         if (!isset($_POST['action'])) {
             $_POST['action'] = 'create';
