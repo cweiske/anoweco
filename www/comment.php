@@ -58,5 +58,10 @@ if ($rowComment->comment_type == 'like') {
     $vars['htmlContent'] = $htmlContent;
 }
 
+if (isset($linkbackEndpoint) && $linkbackEndpoint) {
+    header('X-Pingback: ' . $linkbackEndpoint);
+    header('Link: <' . $linkbackEndpoint . '>; rel="webmention"');
+}
+
 render($template, $vars);
 ?>
