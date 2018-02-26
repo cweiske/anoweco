@@ -21,7 +21,7 @@
      <td><a href="{{comment.url}}">{{comment.comment_published}}</a></td>
      <td>{{comment.comment_type}}</td>
      <td>{{comment.user.user_name}}</td>
-     <td>{{comment.domain}}</td>
+     <td><a href="{{comment.comment_of_url}}">{{comment.domain}}</a></td>
     </tr>
     {% endfor %}
    </tbody>
