@@ -39,9 +39,8 @@ $vars = array(
         'imageurl' => Urls::userImg($rowUser),
     ),
     'postUrl' => Urls::full(Urls::comment($rowComment->comment_id)),
-    'replyUrl' => Urls::full(
-        '/reply.php?url='
-        . urlencode(Urls::full(Urls::comment($rowComment->comment_id)))
+    'replyUrl' => Urls::reply(
+        Urls::full(Urls::comment($rowComment->comment_id))
     ),
 );
 

@@ -44,5 +44,17 @@ class Urls
         }
         return intval($userId);
     }
+
+    public static function reply($url)
+    {
+        return 'https://quill.p3k.io/'
+            . '?' . http_build_query(
+                [
+                    'dontask' => 1,
+                    'me'      => Urls::full('/'),
+                    'reply'   => $url,
+                ]
+            );
+    }
 }
 ?>
