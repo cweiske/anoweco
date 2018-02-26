@@ -1,0 +1,30 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta charset="utf-8"/>
+  <title>Latest comments</title>
+  <link rel="stylesheet" type="text/css" href="css/latest.css"/>
+ </head>
+ <body class="h-entry">
+  <h1>Latest comments</h1>
+  <table>
+   <thead>
+    <tr>
+     <th>Date</th>
+     <th>Type</th>
+     <th>User</th>
+     <th>For domain</th>
+    </tr>
+    </thead>
+   <tbody>
+    {% for comment in comments %}
+    <tr>
+     <td><a href="{{comment.url}}">{{comment.comment_published}}</a></td>
+     <td>{{comment.comment_type}}</td>
+     <td>{{comment.user.user_name}}</td>
+     <td>{{comment.domain}}</td>
+    </tr>
+    {% endfor %}
+   </tbody>
+  </table>
+ </body>
+</html>

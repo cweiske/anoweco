@@ -93,6 +93,49 @@ class Storage
     }
 
     /**
+     * @return null|object NULL if not found, JSON comment object otherwise
+     *                     - "Xrow" property contains the database row object
+     *                     - "user" property contains the user db row object
+     */
+    public function listLatest()
+    {
+        $stmt = $this->db->prepare(
+            'SELECT comment_id, comment_user_id, comment_published'
+            . ', comment_of_url, comment_type'
+            . ' FROM comments'
+            . ' ORDER BY comment_published DESC'
+            . ' LIMIT 20'
+        );
+        $stmt->execute();
+        $rows = $stmt->fetchAll(\PDO::FETCH_OBJ);
+        if (!count($rows)) {
+            return [];
+        }
+        $userIds = array_values(
+            array_unique(array_column($rows, 'comment_user_id'))
+        );
+
+
+        $placeholders = implode(',', array_fill(0, count($userIds), '?'));
+        $stmt = $this->db->prepare(
+            'SELECT * FROM users WHERE user_id IN (' . $placeholders . ')'
+        );
+        $stmt->execute($userIds);
+
+        $users = $stmt->fetchAll(\PDO::FETCH_OBJ);
+        $users = array_combine(
+            array_column($users, 'user_id'),
+            $users
+        );
+
+        foreach ($rows as $row) {
+            $row->user = $users[$row->comment_user_id];
+        }
+
+        return $rows;
+    }
+
+    /**
      * @return null|object NULL if not found, user database row otherwise
      */
     public function getUser($id)
