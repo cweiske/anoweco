@@ -47,7 +47,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     } else {
         error('Authorization HTTP header missing');
     }
-    list($bearer, $token) = explode(' ', $auth, 2);
+
+    $parts = explode(' ', $auth, 2);
+    if (count($parts) != 2) {
+        error('Authorization header must container "Bearer" and the token');
+    }
+
+    list($bearer, $token) = $parts;
     if ($bearer !== 'Bearer') {
         error('Authorization header must start with "Bearer"');
     }
