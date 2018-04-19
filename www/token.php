@@ -1,5 +1,6 @@
 <?php
 header('HTTP/1.0 500 Internal Server Error');
+header("Access-Control-Allow-Origin: *");
 
 function error($msg)
 {
