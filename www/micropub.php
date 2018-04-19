@@ -111,9 +111,13 @@ function handleCreate($json, $token)
 
 function getTokenFromHeader()
 {
-    if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
+    if (isset($_SERVER['HTTP_AUTHORIZATION'])
+        && $_SERVER['HTTP_AUTHORIZATION'] != ''
+    ) {
         $auth = $_SERVER['HTTP_AUTHORIZATION'];
-    } else if (isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
+    } else if (isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])
+        && $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] != ''
+    ) {
         //php-cgi has it there
         $auth = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
     } else {
@@ -122,11 +126,17 @@ function getTokenFromHeader()
             'Authorization HTTP header missing'
         );
     }
+    if (strpos($auth, ' ') === false) {
+        mpError(
+            'HTTP/1.0 403 Forbidden', 'forbidden',
+            'Authorization header must start with "Bearer "'
+        );
+    }
     list($bearer, $token) = explode(' ', $auth, 2);
     if ($bearer !== 'Bearer') {
         mpError(
             'HTTP/1.0 403 Forbidden', 'forbidden',
-            'Authorization header must start with "Bearer"'
+            'Authorization header must start with "Bearer "'
         );
     }
     return trim($token);
