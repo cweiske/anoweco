@@ -177,7 +177,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
     list($ctype) = explode(';', $_SERVER['CONTENT_TYPE'], 2);
     $ctype = trim($ctype);
-    if ($ctype == 'application/x-www-form-urlencoded') {
+    if ($ctype == 'application/x-www-form-urlencoded'
+        || $ctype == 'multipart/form-data'
+    ) {
         if (!isset($_POST['action'])) {
             $_POST['action'] = 'create';
         }
