@@ -35,7 +35,8 @@ function validateToken($token)
         array(
             'http' => array(
                 'header' => array(
-                    'Authorization: Bearer ' . $token
+                    'Authorization: Bearer ' . $token,
+                    'Accept: application/json',
                 ),
                 'ignore_errors' => true,
             ),
@@ -52,10 +53,10 @@ function validateToken($token)
         );
     }
 
-    parse_str($res, $data);
+    $data = json_decode($res, true);
     //FIXME: they spit out non-micropub json error responess
-    verifyUrlParameter($data, 'me');
-    verifyUrlParameter($data, 'client_id');
+    verifyParameter($data, 'me');
+    verifyParameter($data, 'client_id');
     verifyParameter($data, 'scope');
 
     return [$data['me'], $data['client_id'], $data['scope']];

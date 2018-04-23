@@ -146,8 +146,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             error('Invalid signature');
         }
         header('HTTP/1.0 200 OK');
-        header('Content-type: application/x-www-form-urlencoded');
-        echo http_build_query(['me' => $me]);
+        header('Content-type: application/json');
+        echo json_encode(['me' => $me]);
         exit();
     }
 } else if ($_SERVER['REQUEST_METHOD'] == 'HEAD') {

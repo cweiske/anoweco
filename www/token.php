@@ -79,8 +79,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
 
     header('HTTP/1.0 200 OK');
-    header('Content-type: application/x-www-form-urlencoded');
-    echo http_build_query(
+    header('Content-type: application/json');
+    echo json_encode(
         array(
             'me'        => $me,
             'client_id' => $client_id,
@@ -127,10 +127,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         )
     );
     header('HTTP/1.0 200 OK');
-    header('Content-type: application/x-www-form-urlencoded');
-    echo http_build_query(
+    header('Content-type: application/json');
+    echo json_encode(
         array(
             'access_token' => $access_token,
+            'token_type' => 'Bearer',
             'me' => $me,
             'scope' => $scope
         )
