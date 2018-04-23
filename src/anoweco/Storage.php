@@ -28,6 +28,7 @@ class Storage
             . ', comment_of_url = :ofUrl'
             . ', comment_type = :type'
             . ', comment_json = :json'
+            . ', comment_pingstate = "0"'
         );
 
         $ofUrl = '';
