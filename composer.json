@@ -1,0 +1,8 @@
+{
+    "require": {
+        "pear/net_url2": "^2.2",
+        "twig/twig": "^2.5",
+        "pear/services_libravatar": "^0.2.4",
+        "pear2/services_linkback": "^0.3.0"
+    }
+}

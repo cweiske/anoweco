@@ -4,8 +4,6 @@ require_once __DIR__ . '/../src/anoweco/autoload.php';
 
 header("Access-Control-Allow-Origin: *");
 
-\Twig_Autoloader::register();
-
 $loader = new \Twig_Loader_Filesystem(__DIR__ . '/../data/templates/');
 $twig = new \Twig_Environment(
     $loader,
