@@ -4,8 +4,8 @@ require_once __DIR__ . '/../src/anoweco/autoload.php';
 
 header("Access-Control-Allow-Origin: *");
 
-$loader = new \Twig_Loader_Filesystem(__DIR__ . '/../data/templates/');
-$twig = new \Twig_Environment(
+$loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/../data/templates/');
+$twig = new \Twig\Environment(
     $loader,
     array(
         //'cache' => '/path/to/compilation_cache',
@@ -65,7 +65,7 @@ function error($description, $status = 'HTTP/1.0 400 Bad Request')
 
 function render($tplname, $vars = array(), $return = false)
 {
-    $template = $GLOBALS['twig']->loadTemplate($tplname . '.htm');
+    $template = $GLOBALS['twig']->load($tplname . '.htm');
 
     if ($return) {
         return $template->render($vars);

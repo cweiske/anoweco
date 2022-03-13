@@ -6,11 +6,11 @@
  <body class="h-entry">
   <h1>Comment #{{crow.comment_id}}</h1>
   <p>
-   {% spaceless %}
+   {% apply spaceless %}
    <a class="p-author h-card" href="{{author.url}}">
     <img class="u-photo" src="{{author.imageurl}}" alt="" width="32" height="32" />
     {{author.name}}</a>
-   {% endspaceless %}
+   {% endapply %}
    <a href="{{postUrl}}" class="u-url">wrote</a>
    the following reply to
    <a class="in-reply-to u-in-reply-to"
