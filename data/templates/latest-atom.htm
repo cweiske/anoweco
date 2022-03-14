@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+ <title>Latest comments</title>
+ <link href="{{baseUrl}}/latest-atom.php"/>
+ <updated>{{lastComment.comment_published|date("c")}}</updated>
+ <id>{{baseUrl}}/latest-atom.php</id>
+
+ {% for comment in comments %}
+ <entry>
+  <title>{{comment.comment_type}} #{{comment.comment_id}} to {{comment.domain}}</title>
+  <link href="{{baseUrl}}{{comment.url}}"/>
+  <id>{{baseUrl}}{{comment.url}}</id>
+  <updated>{{comment.comment_published|date("c")}}</updated>
+  <author>
+   <name>{{comment.user.user_name}}</name>
+  </author>
+  <summary>
+   {{comment.comment_type}} to
+   {{comment.comment_of_url}}
+  </summary>
+ </entry>
+ {% endfor %}
+</feed>

@@ -73,4 +73,13 @@ function render($tplname, $vars = array(), $return = false)
         echo $template->render($vars);
     }
 }
+
+/**
+ * No trailing slash
+ */
+function getBaseUrl()
+{
+    return $_SERVER['REQUEST_SCHEME']
+        . '://' . $_SERVER['HTTP_HOST'];
+}
 ?>
