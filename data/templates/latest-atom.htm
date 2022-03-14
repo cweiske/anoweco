@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
  <title>Latest comments</title>
- <link href="{{baseUrl}}/latest-atom.php"/>
+ <link rel="alternate" type="text/html" href="{{baseUrl}}/latest.php"/>
+ <link rel="self" href="{{baseUrl}}/latest-atom.php"/>
  <updated>{{lastComment.comment_published|date("c")}}</updated>
  <id>{{baseUrl}}/latest-atom.php</id>
+ <generator uri="https://github.com/cweiske/anoweco">anoweco</generator>
 
  {% for comment in comments %}
  <entry>
