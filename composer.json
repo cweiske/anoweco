@@ -3,6 +3,6 @@
         "pear/net_url2": "^2.2",
         "twig/twig": "^3.0",
         "pear/services_libravatar": "^0.2.4",
-        "pear2/services_linkback": "^0.3.0"
+        "pear2/services_linkback": "^0.4.0"
     }
 }
