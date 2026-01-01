@@ -154,7 +154,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     } else if ($_GET['q'] === 'config') {
         header('HTTP/1.0 200 OK');
         header('Content-Type: application/json');
-        echo '{}';
+        echo json_encode([
+            'post-types' => [
+                [
+                    'type' => 'reply',
+                    'name' => 'Reply',
+                ],
+                [
+                    'type' => 'like',
+                    'name' => 'Like',
+                ],
+            ]
+        ]);
         exit();
     } else if ($_GET['q'] === 'syndicate-to') {
         header('HTTP/1.0 200 OK');
