@@ -51,8 +51,10 @@ if ($rowComment->comment_type == 'like') {
     $template = 'post-reply';
     if (isset($comment->properties->content['html'])) {
         $htmlContent = $comment->properties->content['html'];
-    } else {
+    } elseif (isset($comment->properties->content)) {
         $htmlContent = nl2br($comment->properties->content[0]);
+    } else {
+        $htmlContent = '- No content -';
     }
     $vars['htmlContent'] = $htmlContent;
 }
